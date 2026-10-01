@@ -20,6 +20,7 @@ type HmacSha256 = Hmac<Sha256>;
 pub enum PlaformVariant {
     PS3,
     PS4,
+    PS5,
     PSVita,
 }
 
@@ -36,6 +37,10 @@ pub fn get_platform_variant(title_id: &str) -> Option<PlaformVariant> {
 
     if title_id.starts_with("CUSA") {
         return Some(PlaformVariant::PS4);
+    }
+
+    if title_id.starts_with("PPSA") {
+        return Some(PlaformVariant::PS5);
     }
 
     if title_id.starts_with("PCS") {
@@ -69,6 +74,13 @@ pub fn get_update_info_url(title_id: &str, platform_variant: PlaformVariant) -> 
         )),
         PlaformVariant::PS4 => {
             let hmac = get_title_id_hmac(title_id, "AD62E37F905E06BC19593142281C112CEC0E7EC3E97EFDCAEFCDBAAFA6378D84")?;
+            Ok(format!(
+                "https://gs-sec.ww.np.dl.playstation.net/plo/np/{0}/{1:x}/{0}-ver.xml",
+                title_id, hmac
+            ))
+        }
+        PlaformVariant::PS5 => {
+            let hmac = get_title_id_hmac(title_id, "0C0E79D58512D00FD29930186FF1D327F8F1B3A464C6F7D628CC5D66324476A5")?;
             Ok(format!(
                 "https://gs-sec.ww.np.dl.playstation.net/plo/np/{0}/{1:x}/{0}-ver.xml",
                 title_id, hmac
