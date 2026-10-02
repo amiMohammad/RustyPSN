@@ -143,7 +143,8 @@ impl UpdateInfo {
             }
         }
 
-        if platform_variant != PlaformVariant::PS4 {
+        // PS4 and PS5 use manifest-based updates with multi-part packages
+        if platform_variant != PlaformVariant::PS4 && platform_variant != PlaformVariant::PS5 {
             return Ok(info);
         }
 
